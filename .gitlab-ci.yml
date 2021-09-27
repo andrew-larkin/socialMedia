@@ -1,0 +1,35 @@
+image: maven:latest
+
+services:
+  - postgres:12.2-alpine
+
+stages:
+  - build
+  - test
+
+variables:
+  HOST_USER_NAME: $HOST_USER_NAME
+  HOST_PASSWORD: $HOST_PASSWORD
+  HOST_URL: $HOST_URL
+  POSTGRES_DB: socialnetwork
+  POSTGRES_USER: sn-user
+  POSTGRES_PASSWORD: password
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+build:
+  stage: build
+  script:
+    - mvn clean compile
+#  only:
+#    - merge_requests
+
+test:
+  stage: test
+  script:
+    - mvn clean test
+#  only:
+#    - merge_requests
